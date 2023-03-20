@@ -15,6 +15,9 @@ services:
     ports:
       - 3306:3306
 
+  Webserver:
+    image: apach
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     depends_on:

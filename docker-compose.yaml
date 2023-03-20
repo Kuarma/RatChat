@@ -16,7 +16,13 @@ services:
       - 3306:3306
 
   Webserver:
-    image: apach
+    image: ryad600/ratchat:latest
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - 8080:8080
+      - 3000:3000
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

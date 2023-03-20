@@ -4,11 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Chat Program</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+    <title>Log In</title>
+    <link rel="stylesheet" href="style.css">
+    <audio autoplay>
+        <source src="your-sound-file.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script src="script.js"></script>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <div class="container">
+        <div class="left">
+            <div class="header">
+                <h1 class="title">Rat Chat<h1>
+                <p class="catchphrase">"Catch the <span class="cheader">Cheddar</span> and Chat with Friends"</p>
+                <div class="form">
+                    <p class="form-text-title">Login<p>
+
+                    <form action="login.php" method="post">
+                        <p class="form-text">Email<p>
+                        <input class="input-form" type="text" name="username" placeholder="theo.munoz@gmail.com">
+                        <p class="form-text">Password<p>
+                        <input class="input-form" type="password" name="password" placeholder="Password">
+                        <br>
+                        <input type="submit" value="Log In" class="login-button">
+                    </form>
+                </div>
+                <div class="register">
+                    <p>Don't have a Account? <a href="register.html" class="register-link">Register</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="spinningRat">
+            </div>
+        </div>
+    </div>
 </body>
 </html>

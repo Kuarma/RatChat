@@ -1,9 +1,9 @@
 let pool = null;
-
+// connect to the database
 const initializeMariaDB = async () => {
   const mariadb = require("mariadb");
   pool = mariadb.createPool({
-    database: process.env.DB_NAME || "mychat",
+    database: process.env.DB_NAME || "ratchat",
     host: process.env.DB_HOST || "localhost",
     user: process.env.DB_USER || "root",
     password: process.env.DB_PASSWORD || "supersecret123",
@@ -26,9 +26,12 @@ const executeSQL = async (query) => {
 const initializeDBSchema = async () => {
   const userTableQuery = `CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT,
+    active BOOLEAN NOT NULL DEFAULT 0,
+    email VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
   );`;
+  
   await executeSQL(userTableQuery);
   const messageTableQuery = `CREATE TABLE IF NOT EXISTS messages (
     id INT NOT NULL AUTO_INCREMENT,

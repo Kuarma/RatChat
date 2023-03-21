@@ -1,18 +1,28 @@
-const socket = new WebSocket("ws://localhost:3000");
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.querySelector('.chat-input input');
+  const chat = document.querySelector('.chat-input button');
+  const messages = document.querySelector('.chat-messages');
 
-socket.addEventListener("open", (event) => {
-  console.log("WebSocket connected!");
-  socket.send("Hello, server!");
-});
+  const socket = new WebSocket('ws://localhost:8080');
 
-socket.addEventListener("message", (event) => {
-  console.log(`Received message: ${event.data}`);
-});
+  socket.addEventListener('open', function(event) {
+    const messageElement = document.createElement("p");
+    messageElement.textContent = event.data;
+    messages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
 
-socket.addEventListener("close", (event) => {
-  console.log("WebSocket closed.");
-});
-
-socket.addEventListener("error", (event) => {
-  console.error("WebSocket error:", event);
+  button.addEventListener("click", sendMessage);
+  input.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  });
+function sendMessage() {
+    const message = input.value.trim();
+    if (message.length > 0) {
+      socket.send(message);
+      input.value = "";
+    }
+  }
 });

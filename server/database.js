@@ -2,26 +2,45 @@ let pool = null;
 // connect to the database
 const initializeMariaDB = async () => {
   const mariadb = require("mariadb");
-  pool = mariadb.createPool({
+  const config = {
     database: process.env.DB_NAME || "ratchat",
     host: process.env.DB_HOST || "localhost",
-    user: process.env.DB_USER || "root",
+    user: process.env.DB_USER || "mychat",
     password: process.env.DB_PASSWORD || "supersecret123",
     connectionLimit: 5,
-  });
+    connectTimeout: 30000, // Increase the connection timeout to 30 seconds
+  };
+  console.log('MariaDB pool configuration:', config);
+  pool = mariadb.createPool(config);
 };
 
-const executeSQL = async (query) => {
+async function executeSQL(query) {
+  let conn;
   try {
     conn = await pool.getConnection();
     const res = await conn.query(query);
-    conn.end();
-    return res;
+    console.log(res);
+
   } catch (err) {
-    conn.end();
-    console.log(err)
+    throw err;
+  } finally {
+    if (conn) return conn.end();
   }
-};
+}
+
+
+//const executeSQL = async (query) => {
+//  let 
+//  try {
+//    conn = await pool.getConnection();
+//    const res = await conn.query(query);
+//    return res;
+//  } catch (err) {
+//    console.log(err)
+//  } finally {
+//    if (conn) return conn.end();
+//  }
+//};
 
 const initializeDBSchema = async () => {
   const userTableQuery = `CREATE TABLE IF NOT EXISTS users (

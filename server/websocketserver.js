@@ -12,7 +12,7 @@ const initializeWebsocketServer = (server) => {
 const onConnection = (ws) => {
   console.log(`User ${ws.username} connected`);
   ws.on("message", (message) => onMessage(ws, message));
-  executeSQL(`UPDATE users SET active = 1 WHERE username = ${ws.username};`);
+  //executeSQL(`UPDATE users SET active = 1 WHERE username = ${ws.username};`);
 };
 
 // if a connection is closed, the onClose function is called

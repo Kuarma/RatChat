@@ -6,18 +6,29 @@
     <title>Chat Interface</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="script.js" defer></script>
+    <script src="../script.js" defer></script>
 </head>
     <body class="chat-background">
         <div class="nav">
             <div class="nav-left">
-                <i class="fas fa-cheese fa-lg" style="color: #eeff00;"></i>
+                <div id="sidebar" class="sidebar">
+                    <a href="glimpse.html">Chat</a>
+                    <a href="#">Settings</a>
+                    <a href="#">About</a>
+                    <a href="#">Active</a>
+                </div>
+                <div id="main">
+                    <button class="openbtn" onclick="toggleNav()"><i class="fas fa-cheese fa-lg" style="color: #eeff00;"></i></button>
+                </div>
             </div>
             <div class="nav-right">
                 <h1 class="title-chat">RatChat</h1>
             </div>
         </div>
-        <div>
+        <div id="message">
+            <form>
+                <input type="text" placeholder="Your Text...">
+            </form>
         </div>
     </body>
 </html>

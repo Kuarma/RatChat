@@ -9,25 +9,11 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=supersecret123
-      - MYSQL_DATABASE=ratchat
+      - MYSQL_DATABASE=mychat
       - MYSQL_USER=mychat
-      - MYSQL_PASSWORD=mychatpassword
+      - MYSQL_PASSWORD=pass
     ports:
       - 3306:3306
-
-  Webserver:
-    image: ryad600/ratchat:latest
-    restart: always
-    depends_on:
-      - mariadb
-    environment:
-    - DB_NAME=ratchat
-    - DB_HOST=mariadb
-    - DB_USER=mychat
-    - DB_PASSWORD=mychatpassword
-    ports:
-      - 80:80
-      - 3000:3000
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -40,6 +26,20 @@ services:
       - MYSQL_ROOT_PASSWORD=supersecret123
     ports:
       - 9200:80
+  
+  ratchat:
+    image: ryad600/ratchat:latest
+    depends_on:
+      - mariadb
+    restart: always
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_NAME=mychat
+      - DB_USER=mychat
+      - DB_PASSWORD=mychatpassword
+    ports:
+      - 3000:3000
 
 volumes:
   m321_project_mariadb:

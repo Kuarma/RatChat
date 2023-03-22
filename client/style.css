@@ -9,12 +9,13 @@ body {
     background-color: var(--login-background);
 }
 :root{
-    --background: #f8ffe5;
-    --message-recieve: linear-gradient(140deg, rgba(161,255,250,1) 0%, rgba(149,255,145,1) 81%);;
-    --message-send: linear-gradient(90deg, rgba(161,255,250,1) 0%, rgba(255,158,98,1) 81%);;
+    --background: #8dbe77;
+    --message-recieve: #f2f2f2;
+    --message-send: #e6e6e6;
     --text:  #212227;
-    --settings: #3b3b3b;
-    --login-background: rgb(66, 62, 62);
+    --settings: #3f3d3d;
+    --login-background: rgb(53, 52, 52);
+    --sidebar-background: rgb(228, 215, 38);
 }
 .container {
     display: flex;
@@ -127,6 +128,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1rem;
+    height: 5rem;
     background-color: var(--settings);
 }
 .nav-left{
@@ -138,7 +140,99 @@ body {
     align-items: center;
 }
 .icon{
-    width: 2rem;
+    width: 4rem;
     height: 2rem;
     margin-right: 0.5rem;
+}
+.sidebar{
+    height: 100%; 
+    width: 0; 
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: var(--sidebar-background); 
+    overflow-x: hidden; 
+    padding-top: 60px; 
+    transition: 1.8s;
+    border-right: solid black 1px;
+}
+#main {
+    transition: margin-left 1.4s;
+    padding: 20px;
+  }
+  .sidebar a {
+    padding: 8px 8px 8px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #000000;
+    display: block;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    color: #fafafa;
+    background-color: #000000;
+}
+
+.closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: var(--settings);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+}
+.chat-background{
+    background-color: var(--background);
+}
+.message-block{
+    position: fixed;
+    bottom: 0rem;
+    left: 0rem;
+    right: 1rem;
+    padding: 20px;
+}
+.input-chat{
+    background-color: var(--settings);
+    border: 1px solid rgb(255, 252, 252);
+    width: 100%;
+    padding: 10px;
+    border-radius: 2px;
+    color: rgb(255, 255, 255);
+}
+.message-container {
+    padding: 20px;
+    margin-bottom: 60px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.message-row {
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.message-row.mine {
+    justify-content: flex-end;
+}
+
+.message-row.theirs {
+    justify-content: flex-start;
+}
+
+.bubble {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    word-wrap: break-word;
 }

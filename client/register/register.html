@@ -6,11 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="../style.css">
-    <audio autoplay>
-        <source src="your-sound-file.mp3" type="audio/mpeg">
-    </audio>
-    
-    <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../script.js"></script>
 </head>
 <body>
     <div class="container">
@@ -21,16 +18,16 @@
                 <div class="form">
                     <p class="form-text-title">Register<p>
 
-                        <form id="register-form" onsubmit="handleSubmit(event, 'register')">
-                        <p class="form-text">Username<p>
-                        <input class="input-form" type="text" name="username" placeholder="Theo">
-                        <p class="form-text">Email<p>
-                        <input class="input-form" type="text" name="username" placeholder="theo.munoz@gmail.com">
-                        <p class="form-text">Password<p>
-                        <input class="input-form" type="password" name="password" placeholder="Password">
-                        <br>
-                        <input type="submit" value="Register" class="login-button">
-                    </form>
+                        <form id="register-form">
+                            <p class="form-text">Username<p>
+                            <input class="input-form" type="text" name="username" placeholder="Theo">
+                            <p class="form-text">Email<p>
+                            <input class="input-form" type="text" name="email" placeholder="theo.munoz@gmail.com">
+                            <p class="form-text">Password<p>
+                            <input class="input-form" type="password" name="password" placeholder="Password">
+                            <br>
+                            <input type="submit" value="Register" class="login-button">
+                        </form>
                 </div>
                 <div class="register">
                     <p>Already have an Account? <a href="../index.html" class="register-link">Sign In</a></p>

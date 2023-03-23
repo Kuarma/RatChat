@@ -1,4 +1,11 @@
 const { executeSQL } = require("./database");
+const { jwt } = require("jsonwebtoken");
+
+function createJWT(email, password) {
+  const payload = { email, password };
+  const options = { expiresIn: "1h" };
+  return jwt.sign(payload, process.env.JWT_SECRET, options);
+}
 
 const initializeAPI = (app) => {
   // default REST api endpoint
@@ -8,7 +15,10 @@ const initializeAPI = (app) => {
       const result = await executeSQL(`SELECT * FROM users WHERE email = '${request.email}' AND password = '${request.password}'`);
 
       if (result.length !== 0) {
+        createJWT(request.email, request.password);
+        cook
         res.status(200).json({ message: "Login successful" });
+        
       } else {
         res.status(401).json({ message: "Login failed" });
       }
@@ -45,12 +55,13 @@ const initializeAPI = (app) => {
       const checkEmail = await executeSQL(`SELECT * FROM users WHERE email = '${request.email}'`);
       const checkUsername = await executeSQL(`SELECT * FROM users WHERE username = '${request.username}'`);
 
-      if (checkEmail.length == 0 && checkUsername.length == 0) {
+      if (checkEmail.length === 0 && checkUsername.length === 0) {
         const result = await executeSQL(`INSERT INTO users (email, password, username) VALUES ('${request.email}', '${request.password}', '${request.username}')`);
-        res.status(200).json({ message: "Registration successful" })
-      //end the process
-      return;
+        res.status(200).json({ message: "Registration successful" });
+        //end the process
+        return;
       }
+      
       else if (checkEmail.length !== 0) {
         res.status(401).json({ message: "Email already exists" });
         return;

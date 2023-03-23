@@ -33,6 +33,7 @@ services:
       - mariadb
     restart: always
     environment:
+      - ENV_SECRET=ManuelIschRetard
       - DB_HOST=mariadb
       - DB_PORT=3306
       - DB_NAME=mychat

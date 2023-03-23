@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Interface</title>
+    <title>Settings</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="../script.js" defer></script>
@@ -22,17 +22,24 @@
                 </div>
             </div>
             <div class="nav-right">
-                <h1 class="title-chat">RatChat</h1>
+                <h1 class="title-chat">RatChat Settings</h1>
             </div>
         </div>
-        <div id="message" class="message-container">
-        </div>
-        <div class="message-block">
-            <form>
-                <input type="text" placeholder="Your Text..." class="input-chat">
+        <div class="setting-form">
+            <!--Settings Form here will be the user implementet. (Data will be taken from the jwt Token)-->
+            <h1 class="greet-user">Hello (Display Username)</h1>
+            <form class="user-settings">
+                <h2 class="description">Username</h2> <br>
+                <input class="input-settings" type="text" name="username" placeholder="New Username"> <br>
+                <input class="input-settings" type="submit" value="Save Changes"> <br>
+            </div>
+        </form>
+            <form class="user-settings">
+                <h2 class="description">Password</h2> <br>
+                <input class="input-settings" type="password" name="password" placeholder="New Password"> <br>
+                <input class="input-settings" type="password" name="password" placeholder="Confirm new Password"> <br>
+                <input class="input-settings" type="submit" value="Save Changes">
             </form>
-        </div>
+
     </body>
 </html>
-
-

@@ -49,7 +49,7 @@ async function handleSubmit(event, type) {
     const password = form.password.value;
     const username = type === 'register' ? form.username.value : '';
   
-    const response = await fetch(`/api/${type}`, {
+    const response = await fetch(`../server/api/${type}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

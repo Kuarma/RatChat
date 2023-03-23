@@ -236,3 +236,25 @@ body {
     max-width: 60%;
     word-wrap: break-word;
 }
+.greet-user{
+    font-size: 2rem;
+    font-family: 'Livvic', sans-serif;
+    color: white;
+    text-align: center;
+    margin-top: 5rem;
+}
+.user-settings{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+.input-settings{
+    border: solid 1px;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+}
+.description{
+    font-size: 1.5rem;
+    color: var(--text);
+}

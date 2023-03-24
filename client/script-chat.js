@@ -16,9 +16,12 @@ async function fetchMessages() {
     const response = await fetch("/api/AllMessages");
     if (response.ok) {
       const messages = await response.json();
+      console.log("Fetched messages:", messages);
+
+      const currentUser = getUsernameFromToken();
       for (const message of messages) {
         showmessage(
-          message.user_name === getCookie("username"),
+          message.user_name === currentUser,
           message.user_name,
           message.message
         );
@@ -31,32 +34,33 @@ async function fetchMessages() {
   }
 }
 
-// Call fetchMessages when the page is loaded
+function getCookie(name) {
+  const cookieArr = document.cookie.split(";");
+  for (let i = 0; i < cookieArr.length; i++) {
+    let cookiePair = cookieArr[i].split("=");
+    if (name === cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
+
 fetchMessages();
 
 const ws = new WebSocket("ws://localhost:3000");
 ws.addEventListener("message", (ev) => {
+  console.log('WebSocket received message:', ev.data);
   const data = JSON.parse(ev.data);
-  showmessage(false, data.username, data.message);
+  showmessage(data.username === getUsernameFromToken(), data.username, data.message);
 });
 
-document.querySelector("form").onsubmit = (ev) => {
-  ev.preventDefault();
-  const input = document.querySelector("input");
-  const username = getCookie("username");
-  const message = JSON.stringify({
-    username: username,
-    message: input.value,
-  });
-  ws.send(message);
-};
-
 function getUsernameFromToken() {
-  const token = getCookie("token");
+  const token = getCookie("username");
   if (!token) return "";
 
   try {
     const decodedToken = jwt_decode(token);
+    console.log("Decoded token:", decodedToken);
     return decodedToken.username;
   } catch (error) {
     console.error("Error decoding JWT token:", error);
@@ -69,36 +73,42 @@ function sendMessage() {
   const message = inputField.value.trim();
   if (message === "") return;
 
-  const username = getUsernameFromToken();
+  const username = getCookie("username");
   if (!username) {
     alert("Username not found. Please set a valid username.");
     return;
   }
 
-  ws.send(JSON.stringify({ username, message }));
+  const messageData = JSON.stringify({ username, message });
+  console.log('WebSocket sending message:', messageData); // Add console log
+  ws.send(messageData);
+
+  showmessage(username === getUsernameFromToken(), username, message);
+
   inputField.value = "";
 }
 
-function showmessage(isMine, username, text = false) {
+function showmessage(isMine, username, text, isCurrentUser = false) {
   const theirs = "theirs";
   const messageContainer = document.getElementById("message");
   const messageRow = document.createElement("div");
-  messageRow.className = `message-row ${isMine ? "mine" : theirs}`;
+  messageRow.className = `message-row ${isMine ? "mine" : theirs} ${isCurrentUser ? "current-user" : ""}`;
 
-  // Add the username above the chat bubble
   const usernameLabel = document.createElement("div");
   usernameLabel.className = "username-label";
   usernameLabel.textContent = username;
-  messageRow.appendChild(usernameLabel); // Append the username label to the message row
+  messageRow.appendChild(usernameLabel);
 
-  const bubble = document.createElement("div");
-  bubble.className = "bubble";
-  bubble.style.backgroundColor = isMine
-    ? "var(--message-send)"
-    : "var(--message-recieve)";
-  bubble.textContent = text;
+  if (text) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.style.backgroundColor = isMine
+      ? "var(--message-send)"
+      : "var(--message-recieve)";
+    bubble.textContent = text;
+    messageRow.appendChild(bubble);
+  }
 
-  messageRow.appendChild(bubble);
   messageContainer.appendChild(messageRow);
   messageContainer.scrollTop = messageContainer.scrollHeight;
 }
@@ -109,13 +119,14 @@ chatForm.addEventListener("submit", (event) => {
   sendMessage();
 });
 
+
 function updateChat(message) {
   const messageContainer = document.getElementById("message");
 
   const messageElement = document.createElement("div");
   messageElement.classList.add("chat-message");
 
-  if (message.user_name === getUsernameFromToken()) {
+  if (message.user_name === getCookie("username")) {
     messageElement.classList.add("mine");
   } else {
     messageElement.classList.add("theirs");

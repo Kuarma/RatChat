@@ -1,25 +1,44 @@
 const WebSocket = require("ws");
 const { executeSQL } = require("./database");
-let users = {};
+const cookieParser = require("cookie-parser");
+
+let users = new Map();
 
 // Intiiate the websocket server
 const initializeWebsocketServer = (server) => {
-  const websocketServer = new WebSocket.Server({ server });
-  websocketServer.on("connection", onConnection);
-  websocketServer.on("close", onClose);
+  const wss = new WebSocket.Server({ server });
+  wss.on("connection", onConnection);
+  wss.on("close", onClose);
+  //wss.upgradeReq.headers.cookie
+
+  //websocketServer.use(cookieParser());
 };
 
 // If a new connection is established, the onConnection function is called
-const onConnection = (ws) => {
-
+const onConnection = async (ws, req) => {
+  req.headers.cookie.split(";").forEach((cookie) => {
+    const [key, value] = cookie.split("=");
+    if (key === "username") {
+      ws.username = value;
+    }
+  });
+  
   console.log(`New user connected`);
   ws.on("message", (message) => onMessage(ws, message));
+
   
   //executeSQL(`UPDATE users SET active = 1 WHERE username = ${ws.username};`);
 };
 
 // if a connection is closed, the onClose function is called
-const onClose = (ws) => {
+const onClose = async (ws, req) => {
+  req.headers.cookie.split(";").forEach((cookie) => {
+    const [key, value] = cookie.split("=");
+    if (key === "username") {
+      ws.username = value;
+    }
+  });
+  
   console.log(`A user disconnected`);
 };
 

@@ -7,39 +7,35 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="../script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
+    <script src="../settings/settings.js" defer></script>
+    <script src="../script-chat.js" defer></script>
 </head>
-    <body class="chat-background">
-        <div class="nav">
-            <div class="nav-left">
-                <div id="sidebar" class="sidebar">
-                    <a href="../chat/glimpse.html"><h2>Chat</h2></a>
-                    <a href="../settings/settings.html"><h2>Settings</h2></a>
-                    <a href="#"><h2>About</h2></a>
-                    <a href="#"><h2>Active</h2></a>
-                </div>
-                <div id="main">
-                    <button class="openbtn" onclick="toggleNav()"><i class="fas fa-cheese fa-lg" style="color: #eeff00;"></i></button>
-                </div>
+<body class="chat-background">
+    <div class="nav">
+        <div class="nav-left">
+            <div id="sidebar" class="sidebar">
+                <a href="../chat/glimpse.html"><h2>Chat</h2></a>
+                <a href="../settings/settings.html"><h2>Settings</h2></a>
+                <a href="#"><h2>About</h2></a>
+                <a href="#"><h2>Active</h2></a>
             </div>
-            <div class="nav-right">
-                <h1 class="title-chat">RatChat Settings</h1>
+            <div id="main">
+                <button class="openbtn" onclick="toggleNav()"><i class="fas fa-cheese fa-lg" style="color: #eeff00;"></i></button>
             </div>
         </div>
-        <div class="setting-form">
-            <!--Settings Form here will be the user implementet. (Data will be taken from the jwt Token)-->
-            <h1 class="greet-user">Hello (Display Username)</h1>
-            <form class="user-settings">
-                <h2 class="description">Username</h2> <br>
-                <input class="input-settings" type="text" name="username" placeholder="New Username"> <br>
-                <input class="input-settings" type="submit" value="Save Changes"> <br>
-            </div>
+        <div class="nav-right">
+            <h1 class="title-chat">RatChat Settings</h1>
+        </div>
+    </div>
+    <div class="setting-form">
+        <!--Settings Form here will be the user implementet. (Data will be taken from the jwt Token)-->
+        <div id="usernameGreeting"></div>
+        <form class="user-settings" name="username">
+            <h2 class="description">Username</h2> <br>
+            <input class="input-settings" type="text" name="username" placeholder="New Username"> <br>
+            <input class="input-settings" type="submit" value="Save Changes"> <br>
         </form>
-            <form class="user-settings">
-                <h2 class="description">Password</h2> <br>
-                <input class="input-settings" type="password" name="password" placeholder="New Password"> <br>
-                <input class="input-settings" type="password" name="password" placeholder="Confirm new Password"> <br>
-                <input class="input-settings" type="submit" value="Save Changes">
-            </form>
-
-    </body>
+    </div>
+</body>
 </html>

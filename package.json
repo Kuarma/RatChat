@@ -15,6 +15,7 @@
     "mariadb": "^3.1.0",
     "nodemon": "^2.0.21",
     "ws": "^8.13.0",
-    "jsonwebtoken": "^9.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "cookie-parser": "^1.4.5"
   }
 }

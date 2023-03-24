@@ -110,8 +110,9 @@ const initializeAPI = (app) => {
     try {
       //oldUsername
       //newUsername
+      console.log("changeName");
       let request = req.body;
-      const result = await executeSQL(`UPDATE users SET username = '${request.newusername}' WHERE username = '${request.oldUsername}'`);
+      const result = await executeSQL(`UPDATE users SET username = '${request.newUsername}' WHERE username = '${request.oldUsername}'`);
       if (result.affectedRows === 1) {
         res.status(200).json({ message: "Username changed" });
       }
@@ -123,6 +124,10 @@ const initializeAPI = (app) => {
       console.log(error)
       res.status(500).json({ message: "An server error occured" });
     }
+  });
+
+  app.get("/api/GetAllActiveUsers", async (req, res) => {
+
   });
 };
 module.exports = { initializeAPI };

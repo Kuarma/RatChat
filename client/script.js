@@ -1,16 +1,13 @@
 $(document).ready(function () {
-    // Handle form submission for registration
     $("#register-form").on("submit", function (event) {
       event.preventDefault();
   
-      // Collect form data
       let formData = {
         username: $("input[name='username']").val(),
         email: $("input[name='email']").val(),
         password: $("input[name='password']").val(),
       };
 
-      // Send form data to backend API
       $.ajax({
         type: "POST",
         url: "/api/Registration",
@@ -33,17 +30,14 @@ $(document).ready(function () {
   });
 
   $(document).ready(function () {
-    // Handle form submission for login
     $("#login-form").on("submit", function (event) {
       event.preventDefault();
   
-      // Collect form data
       let formData = {
-        email: $("input[name='email']").val(),
+        username: $("input[name='username']").val(),
         password: $("input[name='password']").val(),
       };
 
-      // Send form data to backend API
       $.ajax({
         type: "POST",
         url: "/api/Login",
@@ -54,8 +48,9 @@ $(document).ready(function () {
           if (response.message === "Login successful") {
             alert("Login successful! Redirecting to chat page...");
             window.location.href = "chat/glimpse.html";
+            document.cookie = "username=" + formData.username;
           } else {
-            alert(response.message + " Redirecting to login page...");
+            alert(response.message + " Please try again.");
           }
         },
         error: function (jqXHR) {

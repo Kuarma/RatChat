@@ -1,49 +1,47 @@
 const { executeSQL } = require("./database");
-const { jwt } = require("jsonwebtoken");
-const secret = process.env.JWT_SECRET;
+const jwt = require("jsonwebtoken");
+const SECRET = "supersecret123";
 
-//function createJWT(email, password) {
-//  const payload = { email, password };
-//  const options = { expiresIn: "1h" };
-//  return jwt.sign(payload, secret, options);
-//}
-//const authenticateJWT = (req, res, next) => {
-//  const token = req.headers.token;
-//  if (!token) {
-//    return res.status(403).json({ message: "Token expired" });
-//  }
-//  try {
-//    const data = jwt.verify(token, "");
-//    req.email = data.email;
-//    req.password = data.password;
-//    return next();
-//  } catch {
-//    return res.sendStatus(403).json({ message: "Token expired" });
-//  }
-//};
+let ActiveUsers = [];
+
+// Create a token for the user
+function createJWT(username) {
+  const token = jwt.sign({ username }, SECRET, { expiresIn: "1h" });
+  return token;
+}
+
+// Initialize the REST api
 const initializeAPI = (app) => {
   // default REST api endpoint
+
+  app.get("/api/logout", (req, res) => {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout successful" });
+  });
+
   app.post("/api/Login", async (req, res) => {
     let request = req.body;
-//    try {
-      const result = await executeSQL(`SELECT * FROM users WHERE email = '${request.email}' AND password = '${request.password}'`);
-//      if (result.length !== 0) {
-//        const token = createJWT(request.email, request.password);
-//        res.cookie("token", token, { httpOnly: true })
-//        .status(200)
-//        .json({ message: "Login successful" });
-//      } else {
-//        res.status(401).json({ message: "Login failed" });
-//      }
-//    } catch (error) {
-//      console.log(error)
+    try {
+      const result = await executeSQL(`SELECT * FROM users WHERE username = '${request.username}' AND password = '${request.password}'`);
       if (result.length !== 0) {
-      res.status(200).json({ message: "login succesful" });
-      } 
+        // Create a token for the user
+        const token = createJWT(request.username);
+        res.cookie('token', token, { httpOnly: true }); // Set the token as a cookie
+        res.status(200).json({ message: "Login successful", token: token });
+      }
       else {
         res.status(401).json({ message: "Login failed" });
       }
-    
+    }
+    catch (error) {
+      console.log(error)
+      if (result.length !== 0) {
+        res.status(200).json({ message: "login succesful" });
+      }
+      else {
+        res.status(401).json({ message: "Login failed" });
+      }
+    }
   });
 
   app.post("/api/Registration", async (req, res) => {
@@ -83,6 +81,45 @@ const initializeAPI = (app) => {
         return;
       }
     } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: "An server error occured" });
+    }
+  });
+
+  app.get("/api/ActiveUsers/", async (req, res) => {
+    try {
+      const result = await executeSQL(`SELECT * FROM users WHERE active = 1`);
+      res.status(200).json(result);
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: "An server error occured" });
+    }
+  });
+
+  app.get("/api/AllMessages", async (req, res) => {
+    try {
+      const result = await executeSQL(`SELECT * FROM messages`);
+      res.status(200).json(result);
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: "An server error occured" });
+    }
+  });
+
+  app.post("/api/changeName", async (req, res) => {
+    try {
+      //oldUsername
+      //newUsername
+      let request = req.body;
+      const result = await executeSQL(`UPDATE users SET username = '${request.newusername}' WHERE username = '${request.oldUsername}'`);
+      if (result.affectedRows === 1) {
+        res.status(200).json({ message: "Username changed" });
+      }
+      else {
+        res.status(401).json({ message: "Username change failed" });
+      }
+    }
+    catch (error) {
       console.log(error)
       res.status(500).json({ message: "An server error occured" });
     }

@@ -18,8 +18,9 @@ const executeSQL = async (query) => {
     const res = await conn.query(query);
     conn.end();
     //log the result and make a new line
+    console.log('---------------------------------------------');
     console.log(res);
-    console.log('');
+    console.log('---------------------------------------------');
     return res;
   } catch (err) {
     conn.end();
@@ -35,19 +36,18 @@ const initializeDBSchema = async () => {
   await executeSQL(deleteUserTable);
   //create new tables
   const userTableQuery = `CREATE TABLE IF NOT EXISTS users (
-    id INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (username)
   );`;
   await executeSQL(userTableQuery);
   const messageTableQuery = `CREATE TABLE IF NOT EXISTS messages (
     id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
+    user_name VARCHAR(255) NOT NULL,
     message VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_name) REFERENCES users(username)
   );`;
   await executeSQL(messageTableQuery);
 };

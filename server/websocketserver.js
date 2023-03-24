@@ -7,36 +7,16 @@ const initializeWebsocketServer = (server) => {
   const websocketServer = new WebSocket.Server({ server });
   websocketServer.on("connection", onConnection);
   websocketServer.on("close", onClose);
-    
 };
 
 // If a new connection is established, the onConnection function is called
 const onConnection = (ws) => {
 
   console.log(`New user connected`);
-  ws.on("message", (message) => messageRouter(ws, message));
+  ws.on("message", (message) => onMessage(ws, message));
   
   //executeSQL(`UPDATE users SET active = 1 WHERE username = ${ws.username};`);
 };
-
-//If a message was recieved check what kind of message it is
-const messageRouter = (ws, message) => {
-  message = JSON.parse(message);
-  if (message.hasOwnProperty("message")) {
-    onMessage(ws, message);
-  }
-  if (message.hasOwnProperty("checkUsers")) {
-    checkUsers(ws, message);
-  }
-  if (message.hasOwnProperty("username")) {
-    setActiveUser(ws, message);
-  }
-} 
-// if a user logs in the setActiveUser function is called
-const setActiveUser = (ws, message) => {
-  users.add(message.username);
-}
-
 
 // if a connection is closed, the onClose function is called
 const onClose = (ws) => {
@@ -44,13 +24,30 @@ const onClose = (ws) => {
 };
 
 // If a new message is received, the onMessage function is called
-const onMessage = (ws, message) => {
+const onMessage = async (ws, message) => {
+  let MSG;
+  console.log("_______________________________________________________");
   console.log("Message received: " + message);
+  console.log("_______________________________________________________");
+
   message = JSON.parse(message);
-  executeSQL(`INSERT INTO messages (user_id, message) VALUES (${message.user_id}, ${message.msg});`);
-  //Send message and id to all users
-  //ws.send(JSON.stringify({ user_id: ws.user_id, message: message }));
-  ws.send(message);
+  const checkUsername = await executeSQL(`SELECT * FROM users WHERE username = '${message.username}';`);
+  if (checkUsername.length === 0) {
+    return;
+  }
+  const savedMSG = await executeSQL(`INSERT INTO messages (user_name, message) VALUES ('${message.username}', '${message.message}');`);
+  if (savedMSG.length == 0) {
+    return;
+  }
+  try {
+     MSG = await executeSQL(`SELECT * FROM messages WHERE user_name = '${message.username}' AND message = '${message.message}';`);
+  }
+  catch (error) {
+    console.log(error)
+    return;
+  }
+
+  ws.send(JSON.stringify(MSG));
 };
 
 module.exports = { initializeWebsocketServer };

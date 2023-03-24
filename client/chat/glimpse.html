@@ -6,6 +6,7 @@
     <title>Chat Interface</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <script src="../script-chat.js" defer></script>
 </head>
     <body class="chat-background">
@@ -16,7 +17,7 @@
                     <a href="../settings/settings.html"><h2>Settings</h2></a>
                     <a href="#"><h2>About</h2></a>
                     <a href="#"><h2>Active</h2></a>
-                    <a href="#"><h2>Log Out</h2></a>
+                    <button id="logout-btn" class="logout-button">Logout</button>
                 </div>
                 <div id="main">
                     <button class="openbtn" onclick="toggleNav()"><i class="fas fa-cheese fa-lg" style="color: #eeff00;"></i></button>
